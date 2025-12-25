@@ -76,20 +76,13 @@ jobs:
         
         # 安装JDK21
         echo "正在安装JDK21..."
-        JAVA_VERSION=$(sdk list java | grep -E "21\..*-" | grep -E "(adpt|tm|open)" | head -1 | awk '{print $NF}')
-        sdk install java $JAVA_VERSION
-        sdk default java $JAVA_VERSION
+        sdk install java 21.0.2-open
+        sdk default java 21.0.2-open
         
         # 安装最新版Maven
         echo "正在安装Maven..."
-        MAVEN_VERSION=$(sdk list maven | grep "^\*.*[0-9]\+\.[0-9]\+\.[0-9]\+" | head -1 | awk '{print $NF}')
-        if [ -z "$MAVEN_VERSION" ]; then
-            # 如果没有找到*标记的版本，选择第一个版本号
-            MAVEN_VERSION=$(sdk list maven | grep -E " [0-9]+\.[0-9]+\.[0-9]+" | head -1 | awk '{print $NF}')
-        fi
-        echo "选择Maven版本: $MAVEN_VERSION"
-        sdk install maven $MAVEN_VERSION
-        sdk default maven $MAVEN_VERSION
+        sdk install maven
+        sdk default maven
         
         # 验证安装
         echo "验证安装..."
