@@ -93,6 +93,14 @@ jobs:
         java -version
         mvn -version
         
+        # 清空SDKMAN临时目录
+        echo "清空SDKMAN临时目录..."
+        SDKMAN_TMP_DIR="${SDKMAN_DIR:-$HOME/.sdkman}/tmp"
+        if [ -d "$SDKMAN_TMP_DIR" ]; then
+          rm -rf "$SDKMAN_TMP_DIR"/*
+          echo "已清空 $SDKMAN_TMP_DIR 目录"
+        fi
+        
         echo "JDK21和Maven安装完成"
         EOF
         
@@ -175,7 +183,7 @@ jobs:
         READMEOF
         
         # 创建版本信息文件
-        cat > "$PACKAGE_DIR/version-info.txt" << 'VERSIONEOF'
+        cat > "$PACKAGE_DIR/version-info.txt" << VERSIONEOF
         构建版本: ${GITHUB_RUN_NUMBER:-1}
         构建时间: $(date -u +"%Y-%m-%dT%H:%M:%SZ")
         Git提交: $(git rev-parse --short HEAD)
