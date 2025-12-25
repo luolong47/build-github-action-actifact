@@ -114,6 +114,13 @@ jobs:
         # 复制SDKMAN安装
         cp -r "${SDKMAN_DIR:-$HOME/.sdkman}" "$PACKAGE_DIR/sdkman"
         
+        # 修复权限问题
+        echo "修复文件权限..."
+        chmod -R 755 "$PACKAGE_DIR/sdkman"
+        find "$PACKAGE_DIR/sdkman" -name "*.sh" -exec chmod +x {} \;
+        chmod -R 755 "$PACKAGE_DIR/sdkman/candidates/java"
+        chmod -R 755 "$PACKAGE_DIR/sdkman/candidates/maven"
+        
         # 创建环境配置脚本
         cat > "$PACKAGE_DIR/setup-env.sh" << 'ENVEOF'
         #!/bin/bash
@@ -210,6 +217,13 @@ jobs:
     - name: 压缩构建物
       run: |
         cd ./build-artifact
+        
+        # 额外修复权限问题，确保7z能够访问所有文件
+        echo "最终修复权限..."
+        chmod -R 755 sdkman-java21-maven-linux-arm64/
+        find sdkman-java21-maven-linux-arm64/ -type f -name "*.sh" -exec chmod +x {} \;
+        
+        # 创建7z压缩包，使用更宽松的权限设置
         7z a "sdkman-java21-maven-linux-arm64-${{ github.run_number }}.7z" sdkman-java21-maven-linux-arm64/
         
         # 生成校验和
