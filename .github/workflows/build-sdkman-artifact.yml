@@ -225,7 +225,7 @@ jobs:
         cd ./build-artifact
         
         # 创建7z压缩包
-        7z a "sdkman-java21-maven-linux-arm64-${{ github.run_number }}.7z" sdkman-java21-maven-linux-arm64/ || true
+        7z a -v100m "sdkman-java21-maven-linux-arm64-${{ github.run_number }}.7z" sdkman-java21-maven-linux-arm64/ || true
         
         # 生成校验和
         sha256sum *.7z > checksums.txt
